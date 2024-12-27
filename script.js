@@ -161,7 +161,7 @@ function updateTaskList() {
         li.innerHTML = `
             <div><strong>Task ID:</strong> ${task.id}</div>
             <div><strong>Name:</strong> ${task.name}</div>
-            <div><strong>Length:</strong> ${task.length.toFixed(2)} ${selectedUnit}</div>
+            <div><strong>Length:</strong> ${convertToSelectedUnit(task.length)} ${selectedUnit}</div>
             <div><strong>Predecessor:</strong> ${task.predecessor || "None"}</div>
             <div><strong>Start Date:</strong> ${task.startDate}</div>
             <div><strong>End Date:</strong> ${task.endDate}</div>
@@ -172,6 +172,29 @@ function updateTaskList() {
 
     taskList.innerHTML = "";
     taskList.appendChild(fragment);
+}
+
+// Convert length to the selected unit
+function convertToSelectedUnit(length) {
+    switch (selectedUnit) {
+        case "h":
+            return (length * 24).toFixed(2);
+        case "w":
+            return (length / 7).toFixed(2);
+        case "m":
+            return (length / 30).toFixed(2);
+        case "y":
+            return (length / 365).toFixed(2);
+        case "d":
+        default:
+            return length.toFixed(2);
+    }
+}
+
+// Update display units
+function updateDisplayUnits(unit) {
+    selectedUnit = unit;
+    updateTaskList();
 }
 
 // Delete a task
@@ -191,7 +214,62 @@ function clearAllTasks() {
     updateTimelineView();
 }
 
-// Generate Gantt Chart
+// Start dragging the divider
+function startDrag(event) {
+    isDragging = true;
+    startX = event.clientX;
+
+    const inputSection = document.querySelector(".input-section");
+    startInputWidth = inputSection.getBoundingClientRect().width;
+
+    // Attach event listeners for dragging and stopping
+    window.addEventListener("mousemove", onDrag);
+    window.addEventListener("mouseup", stopDrag);
+}
+
+// Dragging event
+function onDrag(event) {
+    if (!isDragging) return;
+
+    const dx = event.clientX - startX;
+    const container = document.querySelector(".app-container");
+    const inputSection = document.querySelector(".input-section");
+    const outputSection = document.querySelector(".output-section");
+
+    const containerWidth = container.getBoundingClientRect().width;
+    const newInputWidth = ((startInputWidth + dx) / containerWidth) * 100;
+    const newOutputWidth = 100 - newInputWidth;
+
+    // Ensure minimum width for both sections
+    if (newInputWidth > 20 && newOutputWidth > 20) {
+        inputSection.style.flex = `0 0 ${newInputWidth}%`;
+        outputSection.style.flex = `0 0 ${newOutputWidth}%`;
+    }
+}
+
+// Stop dragging
+function stopDrag() {
+    if (isDragging) {
+        isDragging = false;
+
+        // Remove event listeners to prevent further unwanted movements
+        window.removeEventListener("mousemove", onDrag);
+        window.removeEventListener("mouseup", stopDrag);
+    }
+}
+
+// Apply Monte Carlo Parameters
+function applyMonteCarloParams() {
+    const runs = document.getElementById("simulationRuns").value;
+    const confidence = document.getElementById("confidenceLevel").value;
+
+    console.log(`Monte Carlo Parameters Applied:
+      Runs: ${runs},
+      Confidence Level: ${confidence}%`);
+    alert('Monte Carlo parameters applied successfully!');
+}
+
+// Placeholder for generating Gantt Chart
 function generateGanttChart() {
     const ganttContainer = document.getElementById("ganttChart");
     ganttContainer.innerHTML = '';
@@ -241,43 +319,4 @@ function updateTimelineView() {
         `;
         timelineContainer.appendChild(item);
     });
-}
-
-// Start dragging the divider
-function startDrag(event) {
-    isDragging = true;
-    startX = event.clientX;
-
-    const inputSection = document.querySelector(".input-section");
-    startInputWidth = inputSection.getBoundingClientRect().width;
-
-    // Attach event listeners for dragging and stopping
-    window.addEventListener("mousemove", onDrag);
-    window.addEventListener("mouseup", stopDrag);
-}
-
-function onDrag(event) {
-    if (!isDragging) return;
-
-    const dx = event.clientX - startX;
-    const container = document.querySelector(".app-container");
-    const inputSection = document.querySelector(".input-section");
-    const outputSection = document.querySelector(".output-section");
-
-    const containerWidth = container.getBoundingClientRect().width;
-    const newInputWidth = ((startInputWidth + dx) / containerWidth) * 100;
-    const newOutputWidth = 100 - newInputWidth;
-
-    if (newInputWidth > 20 && newOutputWidth > 20) {
-        inputSection.style.flex = `0 0 ${newInputWidth}%`;
-        outputSection.style.flex = `0 0 ${newOutputWidth}%`;
-    }
-}
-
-function stopDrag() {
-    if (isDragging) {
-        isDragging = false;
-        window.removeEventListener("mousemove", onDrag);
-        window.removeEventListener("mouseup", stopDrag);
-    }
 }
