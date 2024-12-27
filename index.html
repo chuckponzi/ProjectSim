@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectSim Free</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <h1>ProjectSim Free</h1>
+    </header>
+    <div class="app-container">
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="tabs browser-style">
+                <button class="tab-button" onclick="showTab('taskInput')">Task Input</button>
+                <button class="tab-button" onclick="showTab('projectInfo')">Project Info</button>
+                <button class="tab-button" onclick="showTab('distributionInfo')">Distribution Info</button>
+                <button class="tab-button" onclick="showTab('monteCarloParams')">Monte Carlo Parameters</button>
+                <button class="tab-button" onclick="showTab('dataAnalysis')">Data Analysis</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="taskInput" class="tab-content">
+                <h2>Task Input</h2>
+                <label for="taskName">Task Name:</label>
+                <input type="text" id="taskName" placeholder="Task Name">
+                <label for="taskLength">Task Length:</label>
+                <input type="text" id="taskLength" placeholder="Task Length (default: days)" value="1 day">
+                <span id="lengthWarning" class="warning" style="display: none;">*</span>
+                <label for="taskPredecessor">Task Predecessor:</label>
+                <input type="text" id="taskPredecessor" placeholder="Task Predecessor (Task ID)">
+                <label for="distributionType">Distribution Type:</label>
+                <select id="distributionType">
+                    <option value="normal">Normal Distribution</option>
+                    <option value="uniform">Uniform Distribution</option>
+                    <option value="exponential">Exponential Distribution</option>
+                    <option value="triangular">Triangular Distribution</option>
+                    <option value="beta">Beta Distribution</option>
+                </select>
+                <label for="mean">Mean:</label>
+                <input type="number" id="mean" placeholder="Mean">
+                <label for="standardDeviation">Standard Deviation:</label>
+                <input type="number" id="standardDeviation" placeholder="Standard Deviation">
+                <button onclick="addTask()">Add Task</button>
+                <button onclick="clearAllTasks()">Clear All Tasks</button>
+            </div>
+
+            <div id="projectInfo" class="tab-content" style="display: none;">
+                <h2>Project Info</h2>
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" value="My Project">
+                <label for="projectStartDate">Project Start Date:</label>
+                <input type="date" id="projectStartDate" value="2024-12-22">
+                <p>Select Calendar:</p>
+                <label><input type="radio" name="calendar" value="default" checked> Default: 5 days/week, 10 hours/day</label>
+                <label><input type="radio" name="calendar" value="yearRound"> Year Round: 7 days/week, 24 hours/day</label>
+            </div>
+
+            <div id="distributionInfo" class="tab-content" style="display: none;">
+                <h2>Distribution Info</h2>
+                <ul>
+                    <li>
+                        <strong>Normal Distribution:</strong> Symmetric, bell-shaped curve, defined by mean and standard deviation.
+                        <div class="distribution-graphic">
+                            <img src="https://i.imgur.com/ePjTxRz.png" alt="Normal Distribution">
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Uniform Distribution:</strong> All outcomes are equally likely within a range.
+                        <div class="distribution-graphic">
+                            <img src="https://i.imgur.com/r1TLqRi.png" alt="Uniform Distribution">
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Exponential Distribution:</strong> Describes the time between events in a Poisson process.
+                        <div class="distribution-graphic">
+                            <img src="https://i.imgur.com/vQ0ko2p.png" alt="Exponential Distribution">
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Triangular Distribution:</strong> A continuous probability distribution with a triangular shape, defined by minimum, mode, and maximum.
+                        <div class="distribution-graphic">
+                            <img src="https://i.imgur.com/VzN0ecL.png" alt="Triangular Distribution">
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Beta Distribution:</strong> Models probabilities, defined by shape parameters alpha and beta.
+                        <div class="distribution-graphic">
+                            <img src="https://i.imgur.com/u1CCJk8.png" alt="Beta Distribution">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="monteCarloParams" class="tab-content" style="display: none;">
+                <h2>Monte Carlo Parameters</h2>
+                <label for="simulationRuns">Simulation Runs:</label>
+                <input type="number" id="simulationRuns" value="1000">
+                <label for="confidenceLevel">Confidence Level (%):</label>
+                <input type="number" id="confidenceLevel" value="95">
+            </div>
+
+            <div id="dataAnalysis" class="tab-content" style="display: none;">
+                <h2>Data Analysis</h2>
+                <p>Analyze simulation results here...</p>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider" onmousedown="startDrag(event)"></div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <div class="tabs browser-style">
+                <button class="tab-button" onclick="showOutputTab('taskListTab')">Task List</button>
+                <button class="tab-button" onclick="showOutputTab('ganttChartTab')">Gantt Chart</button>
+                <button class="tab-button" onclick="showOutputTab('timelineViewTab')">Timeline View</button>
+            </div>
+
+            <div id="taskListTab" class="output-tab-content">
+                <h2>Task List</h2>
+                <ul id="taskList"></ul>
+            </div>
+
+            <div id="ganttChartTab" class="output-tab-content" style="display: none;">
+                <h2>Gantt Chart</h2>
+                <svg id="ganttChart"></svg>
+            </div>
+
+            <div id="timelineViewTab" class="output-tab-content" style="display: none;">
+                <h2>Timeline View</h2>
+                <div class="timeline-container">
+                    <div class="timeline-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
