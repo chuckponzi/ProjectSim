@@ -320,4 +320,3 @@ function updateTimelineView() {
         timelineContainer.appendChild(item);
     });
 }
-
