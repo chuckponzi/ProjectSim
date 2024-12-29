@@ -6,31 +6,69 @@ let isDragging = false;
 let startX;
 let startInputWidth;
 
-// Show the selected input tab
+// Function to handle input section tabs
 function showTab(tabId) {
-    document.querySelectorAll(".tab-content").forEach(tab => {
-        tab.style.display = "none";
-    });
-    document.getElementById(tabId).style.display = "block";
+    console.log(`Switching to input tab: ${tabId}`);
 
-    document.querySelectorAll(".tabs .tab-button").forEach(button => {
-        button.classList.remove("active");
+    // Hide all input tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
     });
-    document.querySelector(`.tabs .tab-button[onclick="showTab('${tabId}')"]`).classList.add("active");
+
+    // Remove the active class from all input tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // Show the selected input tab content
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+        console.log(`Activated input tab content: ${tabId}`);
+    } else {
+        console.error(`Input tab content with ID '${tabId}' not found.`);
+    }
+
+    // Highlight the selected input tab button
+    const tabButton = document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`);
+    if (tabButton) {
+        tabButton.classList.add('active');
+        console.log(`Activated input tab button for: ${tabId}`);
+    }
 }
 
-// Show the selected output tab
+// Function to handle output section tabs
 function showOutputTab(tabId) {
-    document.querySelectorAll(".output-tab-content").forEach(tab => {
-        tab.style.display = "none";
-    });
-    document.getElementById(tabId).style.display = "block";
+    console.log(`Switching to output tab: ${tabId}`);
 
-    document.querySelectorAll(".output-section .tab-button").forEach(button => {
-        button.classList.remove("active");
+    // Hide all output tab contents
+    document.querySelectorAll('.output-tab-content').forEach(content => {
+        content.classList.remove('active');
     });
-    document.querySelector(`.output-section .tab-button[onclick="showOutputTab('${tabId}')"]`).classList.add("active");
+
+    // Remove the active class from all output tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // Show the selected output tab content
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+        console.log(`Activated output tab content: ${tabId}`);
+    } else {
+        console.error(`Output tab content with ID '${tabId}' not found.`);
+    }
+
+    // Highlight the selected output tab button
+    const tabButton = document.querySelector(`.tab-button[onclick="showOutputTab('${tabId}')"]`);
+    if (tabButton) {
+        tabButton.classList.add('active');
+        console.log(`Activated output tab button for: ${tabId}`);
+    }
 }
+
+
 
 // Ensure Task Input and Task List tabs are selected by default on page load
 document.addEventListener("DOMContentLoaded", () => {
