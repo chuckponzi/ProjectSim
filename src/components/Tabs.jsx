@@ -9,7 +9,7 @@ import CriticalPath from './CriticalPath';
 import DataAnalysis from './DataAnalysis';
 import TimelineView from './TimelineView';
 
-const Tabs = () => {
+const Tabs = ({ addTask }) => {
   const [activeTab, setActiveTab] = useState('taskInput');
   const [tasks, setTasks] = useState([]); // Shared state for tasks
   const [projectInfo, setProjectInfo] = useState({
