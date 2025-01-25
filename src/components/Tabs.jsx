@@ -10,6 +10,7 @@ import DataAnalysis from './DataAnalysis';
 import TimelineView from './TimelineView';
 
 const Tabs = ({ addTask }) => {
+
   const [activeTab, setActiveTab] = useState('taskInput');
   const [tasks, setTasks] = useState([]); // Shared state for tasks
   const [projectInfo, setProjectInfo] = useState({
@@ -24,7 +25,7 @@ const Tabs = ({ addTask }) => {
   });
 
   const tabs = [
-    { id: 'taskInput', label: 'Task Input', component: <TaskInput tasks={tasks} setTasks={setTasks} /> },
+    { id: 'taskInput', label: 'Task Input', component: <TaskInput tasks={tasks} addTask={addTask}/> },
     { id: 'projectInfo', label: 'Project Info', component: <ProjectInfo projectInfo={projectInfo} setProjectInfo={setProjectInfo} /> },
     { id: 'distributionInfo', label: 'Distribution Info', component: <DistributionInfo /> },
     {
