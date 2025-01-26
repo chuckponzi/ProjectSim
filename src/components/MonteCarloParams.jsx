@@ -50,9 +50,13 @@ const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams }) => {
   );
 };
 
-//MonteCarloParams.propTypes = {
-//  monteCarloParams: PropTypes.number,
-//  setMonteCarloParams: PropTypes.func.isRequired,
-//};
+MonteCarloParams.propTypes = {
+  numSimulations: PropTypes.number.isRequired, // Ensures numSimulations is a number and required
+  setNumSimulations: PropTypes.func, // Marking as optional if not always passed
+};
+MonteCarloParams.defaultProps = {
+  numSimulations: 1000, // Default value for numSimulations
+  setNumSimulations: () => {}, // Default to a no-op function
+};
 
 export default MonteCarloParams;
