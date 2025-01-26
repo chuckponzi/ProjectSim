@@ -6,7 +6,7 @@ import * as Yup from "yup";
 const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams }) => {
 
   const initialValues = {
-    numSimulations: numSimulations || 1000, // Default to 1000 if undefined
+    numSimulations: monteCarloParams.numSimulations || 1000, // Default to 1000 if undefined
   };
 
   const validationSchema = Yup.object({
@@ -16,7 +16,7 @@ const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams }) => {
   });
 
   const onSubmit = (values) => {
-    setNumSimulations({numSimulations: values.numSimulations});
+    setMonteCarloParams({numSimulations: values.numSimulations});
   };
 
   return (
@@ -50,9 +50,9 @@ const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams }) => {
   );
 };
 
-MonteCarloParams.propTypes = {
-  numSimulations: PropTypes.number,
-  setNumSimulations: PropTypes.func.isRequired,
-};
+//MonteCarloParams.propTypes = {
+//  monteCarloParams: PropTypes.number,
+//  setMonteCarloParams: PropTypes.func.isRequired,
+//};
 
 export default MonteCarloParams;
