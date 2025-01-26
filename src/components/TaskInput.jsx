@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const TaskInput = ({ addTask }) => {
+const TaskInput = ({ tasks, setTasks }) => {
   const [taskName, setTaskName] = useState("");
   const [taskLength, setTaskLength] = useState("1 day");
   const [taskPredecessor, setTaskPredecessor] = useState("");
@@ -65,7 +65,7 @@ const TaskInput = ({ addTask }) => {
       standardDeviation: standardDeviation ? parseFloat(standardDeviation) : null,
     };
 
-    addTask(task); // Call the parent function to add a task
+  setTasks(task); // Call the parent function to add a task
     resetForm();
   };
 
