@@ -11,6 +11,8 @@ const App = () => {
     calendar: "default",
   });
 
+  console.log("Tasks: ", tasks, "Project Info: ", projectInfo);
+
   return (
     <div id="app-container">
       <Header />

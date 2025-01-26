@@ -1,154 +1,111 @@
 // File: src/components/TaskInput.jsx
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const TaskInput = ({ tasks, setTasks }) => {
-  const [taskName, setTaskName] = useState("");
-  const [taskLength, setTaskLength] = useState("1 day");
-  const [taskPredecessor, setTaskPredecessor] = useState("");
-  const [distributionType, setDistributionType] = useState("normal");
-  const [mean, setMean] = useState("");
-  const [standardDeviation, setStandardDeviation] = useState("");
-  const [warning, setWarning] = useState("");
 
-  const parseDuration = (input) => {
-    const regex = /^(\d+(\.\d+)?)(\s?(d|h|w|m|y|day|days|hour|hours|week|weeks|month|months|year|years|mo|dy))?$/i;
-    const match = input.match(regex);
-    if (!match) {
-      setWarning("Invalid duration format.");
-      return NaN;
-    }
-    setWarning("");
-    const value = parseFloat(match[1]);
-    const unit = (match[4] || "d").toLowerCase();
-    switch (unit) {
-      case "h":
-      case "hour":
-      case "hours":
-        return value / 24;
-      case "w":
-      case "week":
-      case "weeks":
-        return value * 7;
-      case "m":
-      case "month":
-      case "months":
-      case "mo":
-        return value * 30;
-      case "y":
-      case "year":
-      case "years":
-        return value * 365;
-      case "d":
-      case "day":
-      case "days":
-      case "dy":
-      default:
-        return value;
-    }
+  const initialValues = {
+    taskName: "",
+    taskLength: "1 day",
+    taskPredecessor: "",
+    distributionType: "normal",
+    mean: "",
+    standardDeviation: "",
   };
 
-  const handleAddTask = () => {
-    const length = parseDuration(taskLength);
-    if (!taskName || isNaN(length)) {
-      alert("Please provide valid task information.");
-      return;
-    }
+  const validationSchema = Yup.object({
+    taskName: Yup.string().required("Task Name is required"),
+    taskLength: Yup.string().required("Task Length is required"),
+    mean: Yup.number()
+      .typeError("Mean must be a number")
+      .nullable(),
+    standardDeviation: Yup.number()
+      .typeError("Standard Deviation must be a number")
+      .nullable(),
+  });
+
+  const onSubmit = (values, { resetForm }) => {
 
     const task = {
-      id: Date.now(),
-      name: taskName,
-      length,
-      predecessor: taskPredecessor,
-      distributionType,
-      mean: mean ? parseFloat(mean) : null,
-      standardDeviation: standardDeviation ? parseFloat(standardDeviation) : null,
+      name: values.taskName,
+      length: values.taskLength,
+      predecessor: values.taskPredecessor,
+      distributionType: values.distributionType,
+      mean: values.mean ? parseFloat(values.mean) : null,
+      standardDeviation: values.standardDeviation
+        ? parseFloat(values.standardDeviation)
+        : null,
     };
 
-  setTasks(task); // Call the parent function to add a task
+    setTasks((prevTasks) => [...prevTasks, task]);
     resetForm();
-  };
-
-  const resetForm = () => {
-    setTaskName("");
-    setTaskLength("1 day");
-    setTaskPredecessor("");
-    setDistributionType("normal");
-    setMean("");
-    setStandardDeviation("");
-    setWarning("");
   };
 
   return (
     <div className="task-input">
       <h2>Task Input</h2>
-      {warning && <span className="warning">{warning}</span>}
-      <label htmlFor="taskName">Task Name:</label>
-      <input
-        type="text"
-        id="taskName"
-        value={taskName}
-        onChange={(e) => setTaskName(e.target.value)}
-        placeholder="Task Name"
-      />
 
-      <label htmlFor="taskLength">Task Length:</label>
-      <input
-        type="text"
-        id="taskLength"
-        value={taskLength}
-        onChange={(e) => setTaskLength(e.target.value)}
-        placeholder="Task Length (e.g., 1 day)"
-      />
-
-      <label htmlFor="taskPredecessor">Task Predecessor:</label>
-      <input
-        type="text"
-        id="taskPredecessor"
-        value={taskPredecessor}
-        onChange={(e) => setTaskPredecessor(e.target.value)}
-        placeholder="Task Predecessor (Task ID)"
-      />
-
-      <label htmlFor="distributionType">Distribution Type:</label>
-      <select
-        id="distributionType"
-        value={distributionType}
-        onChange={(e) => setDistributionType(e.target.value)}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
       >
-        <option value="normal">Normal</option>
-        <option value="uniform">Uniform</option>
-        <option value="exponential">Exponential</option>
-        <option value="triangular">Triangular</option>
-        <option value="beta">Beta</option>
-      </select>
+        <Form>
+          <label htmlFor="taskName">Task Name:</label>
+          <Field type="text" id="taskName" name="taskName" placeholder="Task Name" />
+          <ErrorMessage name="taskName" component="div" className="error" />
 
-      <label htmlFor="mean">Mean:</label>
-      <input
-        type="number"
-        id="mean"
-        value={mean}
-        onChange={(e) => setMean(e.target.value)}
-        placeholder="Mean"
-      />
+          <label htmlFor="taskLength">Task Length:</label>
+          <Field
+            type="text"
+            id="taskLength"
+            name="taskLength"
+            placeholder="Task Length (e.g., 1 day)"
+          />
+          <ErrorMessage name="taskLength" component="div" className="error" />
 
-      <label htmlFor="standardDeviation">Standard Deviation:</label>
-      <input
-        type="number"
-        id="standardDeviation"
-        value={standardDeviation}
-        onChange={(e) => setStandardDeviation(e.target.value)}
-        placeholder="Standard Deviation"
-      />
+          <label htmlFor="taskPredecessor">Task Predecessor:</label>
+          <Field
+            type="text"
+            id="taskPredecessor"
+            name="taskPredecessor"
+            placeholder="Task Predecessor (Task ID)"
+          />
 
-      <button onClick={handleAddTask}>Add Task</button>
-      <button onClick={resetForm}>Clear</button>
+          <label htmlFor="distributionType">Distribution Type:</label>
+          <Field as="select" id="distributionType" name="distributionType">
+            <option value="normal">Normal</option>
+            <option value="uniform">Uniform</option>
+            <option value="exponential">Exponential</option>
+            <option value="triangular">Triangular</option>
+            <option value="beta">Beta</option>
+          </Field>
+
+          <label htmlFor="mean">Mean:</label>
+          <Field type="number" id="mean" name="mean" placeholder="Mean" />
+          <ErrorMessage name="mean" component="div" className="error" />
+
+          <label htmlFor="standardDeviation">Standard Deviation:</label>
+          <Field
+            type="number"
+            id="standardDeviation"
+            name="standardDeviation"
+            placeholder="Standard Deviation"
+          />
+          <ErrorMessage name="standardDeviation" component="div" className="error" />
+
+          <button type="submit">Add Task</button>
+        </Form>
+      </Formik>
     </div>
   );
 };
 
 TaskInput.propTypes = {
-  addTask: PropTypes.func.isRequired,
+  tasks: PropTypes.array.isRequired,
+  setTasks: PropTypes.func.isRequired,
 };
 
 export default TaskInput;
