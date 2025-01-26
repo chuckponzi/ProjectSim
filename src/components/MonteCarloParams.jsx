@@ -1,54 +1,58 @@
-import React, { useState } from 'react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMonteCarloParams((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+  const initialValues = {
+    numSimulations: numSimulations || 1000, // Default to 1000 if undefined
+  };
+
+  const validationSchema = Yup.object({
+    numSimulations: Yup.number()
+      .min(1, "Must be at least 1 simulation")
+      .required("Number of simulations is required"),
+  });
+
+  const onSubmit = (values) => {
+    setNumSimulations({numSimulations: values.numSimulations});
   };
 
   return (
-    <div>
-      <h2>Monte Carlo Simulation Parameters</h2>
-      <div>
-        <label htmlFor="numSimulations">Number of Simulations:</label>
-        <input
-          type="number"
-          id="numSimulations"
-          name="numSimulations"
-          value={monteCarloParams.numSimulations}
-          onChange={handleChange}
-          placeholder="Enter number of simulations"
-        />
-      </div>
-      <div>
-        <label htmlFor="confidenceInterval">Confidence Interval (%):</label>
-        <input
-          type="number"
-          id="confidenceInterval"
-          name="confidenceInterval"
-          value={monteCarloParams.confidenceInterval}
-          onChange={handleChange}
-          placeholder="e.g., 95"
-        />
-      </div>
-      <div>
-        <label htmlFor="outputSettings">Output Settings:</label>
-        <select
-          id="outputSettings"
-          name="outputSettings"
-          value={monteCarloParams.outputSettings}
-          onChange={handleChange}
-        >
-          <option value="average">Average</option>
-          <option value="minMax">Min/Max</option>
-          <option value="percentile">Percentile</option>
-        </select>
-      </div>
+    <div className="monte-carlo-params">
+      <h2>Monte Carlo Parameters</h2>
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <div className="form-group">
+            <label htmlFor="numSimulations">Number of Simulations:</label>
+            <Field
+              type="number"
+              id="numSimulations"
+              name="numSimulations"
+              placeholder="Enter number of simulations"
+            />
+            <ErrorMessage
+              name="numSimulations"
+              component="div"
+              className="error"
+            />
+          </div>
+          <button type="submit">Save</button>
+        </Form>
+      </Formik>
     </div>
   );
+};
+
+MonteCarloParams.propTypes = {
+  numSimulations: PropTypes.number,
+  setNumSimulations: PropTypes.func.isRequired,
 };
 
 export default MonteCarloParams;

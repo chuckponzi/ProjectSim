@@ -10,8 +10,11 @@ const App = () => {
     startDate: new Date().toISOString().split("T")[0], // Default to today
     calendar: "default",
   });
+  const [monteCarloParams, setMonteCarloParams] = useState({
+    numSimulations: "10"
+  });
 
-  console.log("Tasks: ", tasks, "Project Info: ", projectInfo);
+  console.log("Tasks: ", tasks, "Project Info: ", projectInfo, "MC: ", monteCarloParams);
 
   return (
     <div id="app-container">
@@ -21,6 +24,8 @@ const App = () => {
         setTasks={setTasks}
         projectInfo={projectInfo}
         setProjectInfo={setProjectInfo}
+        monteCarloParams={monteCarloParams}
+        setMonteCarloParams={setMonteCarloParams}
       />
     </div>
   );

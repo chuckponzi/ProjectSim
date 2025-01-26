@@ -1,61 +1,62 @@
 // File: src/components/ProjectInfo.jsx
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const ProjectInfo = ({ projectInfo, setProjectInfo }) => {
-  
-  const handleInputChange = (e) => {
-    const { id, value } = e.target; // Destructure id and value from the input element
-    setProjectInfo((prev) => ({
-      ...prev,
-      [id]: value, // Use id to dynamically update the corresponding property in the state
-    }));
+  const initialValues = { ...projectInfo };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Project name is required"),
+    startDate: Yup.string().required("Start date is required"),
+    calendar: Yup.string().oneOf(["default", "yearRound"], "Invalid calendar type"),
+  });
+
+  const onSubmit = (values) => {
+    setProjectInfo(values); // Update the parent state with form values
   };
 
   return (
     <div className="project-info">
       <h2>Project Info</h2>
 
-      <label htmlFor="projectName">Project Name:</label>
-      <input
-        type="text"
-        id="name" // Changed "name" attribute to "id" for clarity
-        value={projectInfo.name}
-        onChange={handleInputChange}
-        placeholder="Enter project name"
-      />
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <div className="form-group">
+            <label htmlFor="name">Project Name:</label>
+            <Field type="text" id="name" name="name" placeholder="Enter project name" />
+            <ErrorMessage name="name" component="div" className="error" />
+          </div>
 
-      <label htmlFor="startDate">Start Date:</label>
-      <input
-        type="date"
-        id="startDate" // Changed "name" to "id" for better clarity and consistency
-        value={projectInfo.startDate}
-        onChange={handleInputChange}
-      />
+          <div className="form-group">
+            <label htmlFor="startDate">Start Date:</label>
+            <Field type="date" id="startDate" name="startDate" />
+            <ErrorMessage name="startDate" component="div" className="error" />
+          </div>
 
-      <label>Calendar Options:</label>
-      <div>
-        <label>
-          <input
-            type="radio"
-            id="calendar" // Changed "name" to "id" to match state key
-            value="default"
-            checked={projectInfo.calendar === "default"}
-            onChange={handleInputChange}
-          />
-          Default: 5 days/week, 10 hours/day
-        </label>
-        <label>
-          <input
-            type="radio"
-            id="calendar" // Changed "name" to "id" for consistency
-            value="yearRound"
-            checked={projectInfo.calendar === "yearRound"}
-            onChange={handleInputChange}
-          />
-          Year Round: 7 days/week, 24 hours/day
-        </label>
-      </div>
+          <div className="form-group">
+            <label>Calendar Options:</label>
+            <div>
+              <label>
+                <Field type="radio" name="calendar" value="default" />
+                Default: 5 days/week, 10 hours/day
+              </label>
+              <label>
+                <Field type="radio" name="calendar" value="yearRound" />
+                Year Round: 7 days/week, 24 hours/day
+              </label>
+            </div>
+            <ErrorMessage name="calendar" component="div" className="error" />
+          </div>
+
+          <button type="submit">Save Changes</button>
+        </Form>
+      </Formik>
     </div>
   );
 };

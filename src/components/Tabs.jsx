@@ -9,7 +9,7 @@ import CriticalPath from './CriticalPath';
 import DataAnalysis from './DataAnalysis';
 import TimelineView from './TimelineView';
 
-const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo }) => {
+const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, setMonteCarloParams }) => {
 
   const [activeTab, setActiveTab] = useState('taskInput');
 
@@ -17,7 +17,14 @@ const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo }) => {
     { id: 'taskInput', label: 'Task Input', component: <TaskInput tasks={tasks} setTasks={setTasks} /> },
     { id: 'projectInfo', label: 'Project Info', component: <ProjectInfo projectInfo={projectInfo} setProjectInfo={setProjectInfo} /> },
     { id: 'distributionInfo', label: 'Distribution Info', component: <DistributionInfo /> },
-    { id: 'monteCarloParams', label: 'Monte Carlo Params', component: <MonteCarloParams /> },
+    { 
+      id: 'monteCarloParams', 
+      label: 'Monte Carlo Params', 
+      component: <MonteCarloParams 
+                  monteCarloParams={monteCarloParams} 
+                  setMonteCarloParams={setMonteCarloParams} 
+                /> 
+    },
     { id: 'taskList', label: 'Task List', component: <TaskList tasks={tasks} projectInfo={projectInfo} /> },
     { id: 'ganttChart', label: 'Gantt Chart', component: <GanttChart tasks={tasks} projectInfo={projectInfo}/> },
     { id: 'criticalPath', label: 'Critical Path', component: <CriticalPath tasks={tasks} projectInfo={projectInfo} /> },
