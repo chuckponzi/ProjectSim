@@ -33,19 +33,21 @@ const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, 
   ];
 
   return (
-    <div className="tabs-container">
-      <div className="tabs">
+    <div>
+      <div className="tabs w-full flex justify-center gap-4 border-b-2 border-gray-300 pb-2 mt-2">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            className={`py-2 px-4 font-medium text-gray-600 hover:text-primary transition-colors duration-200 bg-blue-400 hover:bg-blue-500 rounded-lg shadow-md ${
+              activeTab === tab.id ? 'border-b-2 border-primary text-primary' : ''
+            }`}
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className="tab-content">
+      <div className="tab-content p-4 bg-white rounded shadow">
         {tabs.find((tab) => tab.id === activeTab)?.component || <TaskInput tasks={tasks} setTasks={setTasks} />}
       </div>
     </div>
