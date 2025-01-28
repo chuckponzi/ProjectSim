@@ -6,13 +6,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#1d4ed8", // Main blue for tabs and buttons
-        secondary: "#9333ea", // Accent purple
-        background: "#ffffff", // Light background
-        card: "#f3f4f6", // Card background
-        text: "#374151", // Main text color
-        muted: "#6b7280", // Muted text (secondary info)
-        border: "#e5e7eb", // Border color
+        primary: "#98C1D9", // Muted blue-gray for primary elements
+        secondary: "#EE6C4D", // Soft brick red for accents
+        accent: "#E0FBFC", // Light aqua for backgrounds or highlights
+        background: "#F4F4F9", // Off-white gray for overall background
+        text: "#3D5A80", // Deep slate blue for text
+        card: "#E0FBFC", // Light aqua for card backgrounds
+        muted: "#6B7280", // Gray for muted/secondary text
+        border: "#CBD5E1", // Light gray-blue for borders
       },
     },
   },

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Tabs from './components/Tabs';
+import StyLst from "./styles/StyLst";
 import './App.css';
 
 const App = () => {
@@ -17,11 +18,8 @@ const App = () => {
   console.log("Tasks: ", tasks, "Project Info: ", projectInfo, "MC: ", monteCarloParams);
 
   return (
-    <div 
-      id="app-container" 
-      className="min-h-screen bg-background text-text flex flex-col items-center p-4"
-    >
-      <Header className="w-full bg-primary text-white text-center p-4 shadow-md" />
+    <div id="app-container" className={StyLst.app} >
+      <Header className={StyLst.Header} styLst={StyLst} />
       <Tabs
         tasks={tasks}
         setTasks={setTasks}
@@ -29,7 +27,8 @@ const App = () => {
         setProjectInfo={setProjectInfo}
         monteCarloParams={monteCarloParams}
         setMonteCarloParams={setMonteCarloParams}
-        className="w-full flex justify-center gap-4 border-b-2 border-border pb-2"
+        styLst={StyLst}
+        className={StyLst.Tabs}
       />
     </div>
   );
