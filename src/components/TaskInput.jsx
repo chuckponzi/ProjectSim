@@ -7,17 +7,18 @@ import * as Yup from "yup";
 const TaskInput = ({ tasks, setTasks, styLst }) => {
 
   const initialValues = {
-    taskName: "",
-    taskLength: "1 day",
-    taskPredecessor: "",
+    id: 0,
+    name: "",
+    duration: "1 day",
+    predecessor: "",
     distributionType: "normal",
     mean: "",
     standardDeviation: "",
   };
 
   const validationSchema = Yup.object({
-    taskName: Yup.string().required("Task Name is required"),
-    taskLength: Yup.string().required("Task Length is required"),
+    name: Yup.string().required("Task Name is required"),
+    duration: Yup.string().required("Task Length is required"),
     mean: Yup.number()
       .typeError("Mean must be a number")
       .nullable(),
@@ -27,19 +28,17 @@ const TaskInput = ({ tasks, setTasks, styLst }) => {
   });
 
   const onSubmit = (values, { resetForm }) => {
-
-    const task = {
-      name: values.taskName,
-      length: values.taskLength,
-      predecessor: values.taskPredecessor,
+    const newTask = {
+      id: Date.now(), // Generate unique ID for the task
+      name: values.name,
+      duration: values.duration,
+      predecessor: values.predecessor,
       distributionType: values.distributionType,
       mean: values.mean ? parseFloat(values.mean) : null,
-      standardDeviation: values.standardDeviation
-        ? parseFloat(values.standardDeviation)
-        : null,
+      standardDeviation: values.standardDeviation ? parseFloat(values.standardDeviation) : null,
     };
 
-    setTasks((prevTasks) => [...prevTasks, task]);
+    setTasks([...tasks, newTask]);
     resetForm();
   };
 
@@ -55,25 +54,28 @@ const TaskInput = ({ tasks, setTasks, styLst }) => {
         onSubmit={onSubmit}
       >
         <Form className={styLst.group} >
-          <label htmlFor="taskName" className={styLst.lbl} >Task Name:</label>
+
+          <label 
+            htmlFor="name" 
+            className={styLst.lbl} >Task Name:</label>
           <Field 
             type="text" 
-            id="taskName" 
-            name="taskName" 
+            id="name" 
+            name="name" 
             placeholder="Task Name" 
             className={styLst.lbl}
           />
-          <ErrorMessage name="taskName" component="div" className={styLst.errMsg}  />
+          <ErrorMessage name="name" component="div" className={styLst.errMsg}  />
 
-          <label htmlFor="taskLength" className={styLst.lbl}>Task Length:</label>
+          <label htmlFor="duration" className={styLst.lbl}>Task Length:</label>
           <Field
             type="text"
-            id="taskLength"
-            name="taskLength"
+            id="duration"
+            name="duration"
             placeholder="Task Length (e.g., 1 day)"
             className={styLst.lbl}
           />
-          <ErrorMessage name="taskLength" component="div" className={styLst.errMsg} />
+          <ErrorMessage name="duration" component="div" className={styLst.errMsg} />
 
           <label htmlFor="taskPredecessor" className={styLst.lbl}>Task Predecessor:</label>
           <Field
