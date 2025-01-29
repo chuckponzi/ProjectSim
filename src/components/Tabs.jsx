@@ -24,7 +24,10 @@ const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, 
       label: 'Project Info', 
       component: <ProjectInfo projectInfo={projectInfo} setProjectInfo={setProjectInfo} styLst={styLst} /> 
     },
-    { id: 'distributionInfo', label: 'Distribution Info', component: <DistributionInfo /> },
+    { 
+      id: 'distributionInfo', 
+      label: 'Distribution Info', 
+      component: <DistributionInfo styLst={styLst}/> },
     { 
       id: 'monteCarloParams', 
       label: 'Monte Carlo Params', 
