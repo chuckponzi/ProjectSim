@@ -34,13 +34,34 @@ const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, 
       component: <MonteCarloParams 
                   monteCarloParams={monteCarloParams} 
                   setMonteCarloParams={setMonteCarloParams} 
+                  styLst={styLst}
                 /> 
     },
-    { id: 'taskList', label: 'Task List', component: <TaskList tasks={tasks} projectInfo={projectInfo} /> },
-    { id: 'ganttChart', label: 'Gantt Chart', component: <GanttChart tasks={tasks} projectInfo={projectInfo}/> },
-    { id: 'criticalPath', label: 'Critical Path', component: <CriticalPath tasks={tasks} projectInfo={projectInfo} /> },
-    { id: 'dataAnalysis', label: 'Data Analysis', component: <DataAnalysis tasks={tasks} projectInfo={projectInfo} /> },
-    { id: 'timelineView', label: 'Timeline View', component: <TimelineView tasks={tasks} projectInfo={projectInfo} /> },
+    { id: 
+      'taskList', 
+      label: 'Task List', 
+      component: <TaskList tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
+    },
+    { 
+      id: 'ganttChart', 
+      label: 'Gantt Chart', 
+      component: <GanttChart tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
+    },
+    { 
+      id: 'criticalPath', 
+      label: 'Critical Path', 
+      component: <CriticalPath tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
+    },
+    { 
+      id: 'dataAnalysis', 
+      label: 'Data Analysis', 
+      component: <DataAnalysis tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
+    },
+    { id: 
+      'timelineView', 
+      label: 'Timeline View', 
+      component: <TimelineView tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
+    },
   ];
 
   return (

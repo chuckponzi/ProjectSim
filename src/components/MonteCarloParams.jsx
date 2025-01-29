@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams }) => {
+const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams, styLst }) => {
 
   const initialValues = {
     numSimulations: monteCarloParams.numSimulations || 1000, // Default to 1000 if undefined
