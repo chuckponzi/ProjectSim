@@ -6,6 +6,9 @@ import './App.css';
 
 const App = () => {
 
+  const [inputTab, setInputTab] = useState("taskInput");
+  const [outputTab, setOutputTab] = useState("ganttChart");
+  
   const [tasks, setTasks] = useState([]); // Default to empy task list
   
   const [projectInfo, setProjectInfo] = useState({
@@ -33,8 +36,17 @@ const App = () => {
 
   return (
     <div className={StyLst.app} >
-      <Header className={StyLst.Header} styLst={StyLst} />
+      <Header 
+        inputTab={inputTab}
+        setInputTab={setInputTab}
+        outputTab={outputTab}
+        setOutputTab={setOutputTab}
+        className={StyLst.Header} 
+        styLst={StyLst} 
+      />
       <Tabs
+        inputTab={inputTab}
+        outputTab={outputTab}
         tasks={tasks}
         setTasks={setTasks}
         projectInfo={projectInfo}
