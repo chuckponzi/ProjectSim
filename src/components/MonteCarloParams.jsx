@@ -20,30 +20,37 @@ const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams, styLst }) => 
   };
 
   return (
-    <div className="monte-carlo-params">
-      <h2>Monte Carlo Parameters</h2>
+
+    <div className={styLst.form} 
+    >
+      <h2 className={styLst.title} >Monte Carlo Parameters</h2>
 
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        <Form>
-          <div className="form-group">
-            <label htmlFor="numSimulations">Number of Simulations:</label>
+        <Form className={styLst.group} >
+          <div>
+            <label htmlFor="numSimulations" className={styLst.lbl} >Number of Simulations:</label>
             <Field
               type="number"
               id="numSimulations"
               name="numSimulations"
               placeholder="Enter number of simulations"
+              className={styLst.input}
             />
             <ErrorMessage
               name="numSimulations"
               component="div"
-              className="error"
+              className={styLst.errMsg}
             />
           </div>
-          <button type="submit">Save</button>
+          <div className={styLst.btnGrp}>
+            <button type="submit" className={styLst.btnPrim}>
+              Save
+            </button>
+          </div>
         </Form>
       </Formik>
     </div>
@@ -51,12 +58,11 @@ const MonteCarloParams = ({ monteCarloParams, setMonteCarloParams, styLst }) => 
 };
 
 MonteCarloParams.propTypes = {
-  numSimulations: PropTypes.number.isRequired, // Ensures numSimulations is a number and required
-  setNumSimulations: PropTypes.func, // Marking as optional if not always passed
-};
-MonteCarloParams.defaultProps = {
-  numSimulations: 1000, // Default value for numSimulations
-  setNumSimulations: () => {}, // Default to a no-op function
+  monteCarloParams: PropTypes.shape({
+    numSimulations: PropTypes.number.isRequired,
+  }).isRequired,
+  setMonteCarloParams: PropTypes.func.isRequired,
+  styLst: PropTypes.object.isRequired,
 };
 
 export default MonteCarloParams;
