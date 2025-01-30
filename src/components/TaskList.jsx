@@ -3,7 +3,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TaskList = ({ tasks, styLst }) => {
+const TaskList = ({ projectInfo, tasks, styLst }) => {
   if (tasks.length === 0) {
     return <p className="text-muted text-center">No tasks available. Add some tasks to get started!</p>;
   }

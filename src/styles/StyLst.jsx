@@ -16,6 +16,8 @@ const StyLst = {
   Tabs:"w-full flex justify-center gap-4 border-b-2 border-border pb-2",
   div1: "mt-4 flex justify-center",
   div2: "container mx-auto flex justify-between items-center px-4",  
+  div3: "grid grid-cols-2 gap-6",
+  div4: "bg-card p-4 rounded-lg shadow-md",
   ul1: "flex gap-4",
   ul2: "space-y-6",
   a1: "hover:underline",
