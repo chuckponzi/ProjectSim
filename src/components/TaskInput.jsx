@@ -16,9 +16,40 @@ const TaskInput = ({ tasks, setTasks, styLst }) => {
     standardDeviation: "",
   };
 
+  const durationRegex = /^(\d+(\.\d+)?)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hr|hour|hours|d|dy|day|days|w|wk|week|weeks|mt|mon|month|months|y|yr|year|years)$/i;
+
+  const parseDuration = (input) => {
+    const match = input.match(durationRegex);
+    if (!match) return NaN;
+
+    const value = parseFloat(match[1]);
+    const unit = match[3].toLowerCase();
+
+    switch (unit) {
+      case "s": case "sec": case "secs": case "second": case "seconds":
+        return value / 86400; // Convert to days
+      case "m": case "min": case "mins": case "minute": case "minutes":
+        return value / 1440; // Convert to days
+      case "h": case "hr": case "hour": case "hours":
+        return value / 24; // Convert to days
+      case "d": case "dy": case "day": case "days":
+        return value;
+      case "w": case "wk": case "week": case "weeks":
+        return value * 7;
+      case "mt": case "mon": case "month": case "months":
+        return value * 30;
+      case "y": case "yr": case "year": case "years":
+        return value * 365;
+      default:
+        return NaN;
+    }
+  };
+
   const validationSchema = Yup.object({
     name: Yup.string().required("Task Name is required"),
-    duration: Yup.string().required("Task Length is required"),
+    duration: Yup.string()
+      .matches(durationRegex, "Invalid duration format")
+      .required("Duration is required"),
     mean: Yup.number()
       .typeError("Mean must be a number")
       .nullable(),
@@ -28,6 +59,13 @@ const TaskInput = ({ tasks, setTasks, styLst }) => {
   });
 
   const onSubmit = (values, { resetForm }) => {
+
+    const parsedDuration = parseDuration(values.duration);
+    if (isNaN(parsedDuration)) {
+      alert("Invalid duration format");
+      return;
+    }
+    
     const newTask = {
       id: Date.now(), // Generate unique ID for the task
       name: values.name,
