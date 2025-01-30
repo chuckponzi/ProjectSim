@@ -12,6 +12,7 @@ const Header = ({ inputTab, setInputTab, outputTab, setOutputTab, styLst }) => {
   ];
 
   const outputTabs = [
+    { id: "taskList", label: "Task List" },
     { id: "criticalPath", label: "Critical Path" },
     { id: "dataAnalysis", label: "Data Analysis" },
     { id: "ganttChart", label: "Gantt Chart" },

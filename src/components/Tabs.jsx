@@ -9,78 +9,25 @@ import CriticalPath from './CriticalPath';
 import DataAnalysis from './DataAnalysis';
 import TimelineView from './TimelineView';
 
-const Tabs = ({ tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, setMonteCarloParams, styLst }) => {
-
-  const [activeTab, setActiveTab] = useState('taskInput');
-
-  const tabs = [
-    { 
-      id: 'taskInput', 
-      label: 'Task Input', 
-      component: <TaskInput tasks={tasks} setTasks={setTasks} styLst={styLst} /> 
-    },
-    { 
-      id: 'projectInfo', 
-      label: 'Project Info', 
-      component: <ProjectInfo projectInfo={projectInfo} setProjectInfo={setProjectInfo} styLst={styLst} /> 
-    },
-    { 
-      id: 'distributionInfo', 
-      label: 'Distribution Info', 
-      component: <DistributionInfo styLst={styLst}/> },
-    { 
-      id: 'monteCarloParams', 
-      label: 'Monte Carlo Params', 
-      component: <MonteCarloParams 
-                  monteCarloParams={monteCarloParams} 
-                  setMonteCarloParams={setMonteCarloParams} 
-                  styLst={styLst}
-                /> 
-    },
-    { id: 
-      'taskList', 
-      label: 'Task List', 
-      component: <TaskList tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
-    },
-    { 
-      id: 'ganttChart', 
-      label: 'Gantt Chart', 
-      component: <GanttChart tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
-    },
-    { 
-      id: 'criticalPath', 
-      label: 'Critical Path', 
-      component: <CriticalPath tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
-    },
-    { 
-      id: 'dataAnalysis', 
-      label: 'Data Analysis', 
-      component: <DataAnalysis tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
-    },
-    { id: 
-      'timelineView', 
-      label: 'Timeline View', 
-      component: <TimelineView tasks={tasks} projectInfo={projectInfo} styLst={styLst} /> 
-    },
-  ];
+const Tabs = ({ inputTab, outputTab, tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, setMonteCarloParams, styLst }) => {
 
   return (
-    <div>
-      <div className="tabs w-full flex justify-center gap-4 border-b-2 border-gray-300 pb-2 mt-2">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`py-2 px-4 font-medium text-gray-600 hover:text-primary transition-colors duration-200 bg-blue-400 hover:bg-blue-500 rounded-lg shadow-md ${
-              activeTab === tab.id ? 'border-b-2 border-primary text-primary' : ''
-            }`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
+    <div className="grid grid-cols-2 gap-6">
+      {/* Left Side - Inputs */}
+      <div className="bg-card p-4 rounded-lg shadow-md">
+        {inputTab === 'taskInput' && <TaskInput tasks={tasks} setTasks={setTasks} styLst={styLst} />}
+        {inputTab === 'projectInfo' && <ProjectInfo projectInfo={projectInfo} setProjectInfo={setProjectInfo} styLst={styLst} />}
+        {inputTab === 'distributionInfo' && <DistributionInfo styLst={styLst} />}
+        {inputTab === 'monteCarloParams' && <MonteCarloParams monteCarloParams={monteCarloParams} setMonteCarloParams={setMonteCarloParams} styLst={styLst} />}
       </div>
-      <div className="tab-content p-4 bg-white rounded shadow">
-        {tabs.find((tab) => tab.id === activeTab)?.component || <TaskInput tasks={tasks} setTasks={setTasks} />}
+      
+      {/* Right Side - Outputs */}
+      <div className="bg-card p-4 rounded-lg shadow-md">
+        {outputTab === 'taskList' && <TaskList tasks={tasks} styLst={styLst} />}
+        {outputTab === 'ganttChart' && <GanttChart tasks={tasks} styLst={styLst} />}
+        {outputTab === 'criticalPath' && <CriticalPath tasks={tasks} styLst={styLst} />}
+        {outputTab === 'dataAnalysis' && <DataAnalysis tasks={tasks} styLst={styLst} />}
+        {outputTab === 'timelineView' && <TimelineView tasks={tasks} styLst={styLst} />}
       </div>
     </div>
   );
