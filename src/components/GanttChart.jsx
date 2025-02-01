@@ -6,8 +6,10 @@ import Gantt from "frappe-gantt"; // Assuming this is the Gantt library being us
 
 const GanttChart = ({ tasks, projectInfo, styLst }) => {
 
+  //// useState Section
   const [parsedTasks, setParsedTasks] = useState([]);
 
+  //// useEffect Section
   useEffect(() => {
     const calculateTaskDates = () => {     
       if (!projectInfo.startDate) {
@@ -42,7 +44,6 @@ const GanttChart = ({ tasks, projectInfo, styLst }) => {
     const updatedTasks = calculateTaskDates();
     setParsedTasks(updatedTasks);
   }, [tasks, projectInfo]);
-
   useEffect(() => {
     if (parsedTasks.length > 0) {
       const gantt = new Gantt("#gantt", parsedTasks, {
@@ -56,9 +57,12 @@ const GanttChart = ({ tasks, projectInfo, styLst }) => {
   }, [parsedTasks]);
 
   return (
-    <div className={styLst.form}>
+    <div className="flex flex-col w-full h-screen p-4 bg-white border border-border rounded-lg shadow-md">
       <h2 className={styLst.title}>Gantt Chart</h2>
-      <div id="gantt" className="bg-white border border-border rounded-lg shadow-md"></div>
+      <div
+        id="gantt"
+        className="flex-grow h-full overflow-auto border border-border bg-background rounded-lg"
+      ></div>
     </div>
   );
 };

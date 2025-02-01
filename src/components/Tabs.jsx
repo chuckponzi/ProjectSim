@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from "prop-types";
 import TaskInput from './TaskInput';
 import ProjectInfo from './ProjectInfo';
 import DistributionInfo from './DistributionInfo';
@@ -34,3 +35,8 @@ const Tabs = ({ inputTab, outputTab, tasks, setTasks, projectInfo, setProjectInf
 };
 
 export default Tabs;
+
+Tabs.propTypes = {
+  inputTab: PropTypes.string.isRequired,
+  outputTab: PropTypes.string.isRequired,
+};
