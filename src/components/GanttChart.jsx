@@ -1,16 +1,23 @@
 // File: src/components/GanttChart.jsx
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import Gantt from "frappe-gantt"; // Assuming this is the Gantt library being used
 
 const GanttChart = ({ tasks, projectInfo, styLst }) => {
 
-  //// useState Section
+  //// useRef Section ////
+  // Gantt Container DOM Element
+  const ganttRef = useRef(null);
+  
+  //// useState Section ////
+  // Formatted Task List
   const [parsedTasks, setParsedTasks] = useState([]);
+  // Gantt Container Size
+  const [size, setSize] = useState({ width: 800, height: 600 });
 
-  //// useEffect Section
-  // useEffect 1
+  //// useEffect Section ////
+  // useEffect - Task List Processing
   useEffect(() => {
     const calculateTaskDates = () => {     
       if (!projectInfo.startDate) {
@@ -45,30 +52,55 @@ const GanttChart = ({ tasks, projectInfo, styLst }) => {
     const updatedTasks = calculateTaskDates();
     setParsedTasks(updatedTasks);
   }, [tasks, projectInfo]);
-  // useEffect 2
+  // useEffect  - Gantt Chart Creation
   useEffect(() => {
     if (parsedTasks.length > 0) {
-      const gantt = new Gantt("#gantt", parsedTasks, {
+      new Gantt(ganttRef.current, parsedTasks, {
         view_mode: "Day",
-        language: "en",
-        bar_height: 20,
-        padding: 18,
-        custom_popup_html: null, // Add custom popup HTML if needed
+        bar_height: 30,
+        padding: 20,
       });
     }
-  }, [parsedTasks]);
+  }, [parsedTasks, size]);
 
-  //// JSX Return
+  //// JSX Return ////
   return (
-    <div>
-      <h2 className={styLst.title}>Gantt Chart</h2>
+    <div className="flex flex-col items-center p-4">
+      <div className="flex gap-4 mb-4">
+        <div className="flex flex-col items-center">
+          <label className={styLst.lbl} >Width: {size.width}px</label>
+          <input
+            type="range"
+            min="600"
+            max="1200"
+            value={size.width}
+            onChange={(e) => setSize({ ...size, width: parseInt(e.target.value, 10) })}
+            className="w-40"
+          />
+        </div>
+        <div className="flex flex-col items-center">
+          <label className={styLst.lbl} >Height: {size.height}px</label>
+          <input
+            type="range"
+            min="400"
+            max="800"
+            value={size.height}
+            onChange={(e) => setSize({ ...size, height: parseInt(e.target.value, 10) })}
+            className="w-40"
+          />
+        </div>
+      </div>
       <div
-        id="gantt"
-      ></div>
+        className="border border-border rounded-lg shadow-md"
+        style={{ width: `${size.width}px`, height: `${size.height}px` }}
+      >
+        <div ref={ganttRef} id="gantt" className="w-full h-full"></div>
+      </div>
     </div>
   );
 };
 
+//// Prop Validation ////
 GanttChart.propTypes = {
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
@@ -84,4 +116,5 @@ GanttChart.propTypes = {
   styLst: PropTypes.object.isRequired,
 };
 
+//// Component Export ////
 export default GanttChart;
