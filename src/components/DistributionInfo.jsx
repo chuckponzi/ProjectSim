@@ -44,7 +44,7 @@ const DistributionInfo = ({ styLst }) => {
           <li key={index} className={styLst.li1} >
             <h3 className={styLst.h_1}>{distribution.name}</h3>
             <p className={styLst.p1}>{distribution.description}</p>
-            <div className={styLst.div1}>
+            <div className={styLst.div5}>
               <img src={distribution.image} alt={distribution.name} className={styLst.img1}/>
             </div>
           </li>

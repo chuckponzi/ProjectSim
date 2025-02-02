@@ -13,9 +13,9 @@ import TimelineView from './TimelineView';
 const Tabs = ({ inputTab, outputTab, tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, setMonteCarloParams, styLst }) => {
 
   return (
-    <div className={styLst.div3}>
+    <div className={styLst.div1}>
       {/* Left Side - Inputs */}
-      <div className={styLst.div4}>
+      <div className={styLst.div2}>
         {inputTab === 'taskInput' && <TaskInput tasks={tasks} setTasks={setTasks} styLst={styLst} />}
         {inputTab === 'projectInfo' && <ProjectInfo projectInfo={projectInfo} setProjectInfo={setProjectInfo} styLst={styLst} />}
         {inputTab === 'distributionInfo' && <DistributionInfo styLst={styLst} />}
@@ -23,7 +23,7 @@ const Tabs = ({ inputTab, outputTab, tasks, setTasks, projectInfo, setProjectInf
       </div>
       
       {/* Right Side - Outputs */}
-      <div className={styLst.div4}>
+      <div className={styLst.div2}>
         {outputTab === 'taskList' && <TaskList projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
         {outputTab === 'ganttChart' && <GanttChart projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
         {outputTab === 'criticalPath' && <CriticalPath projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
