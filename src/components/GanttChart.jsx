@@ -4,11 +4,12 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import Gantt from "frappe-gantt"; // Assuming this is the Gantt library being used
 
-const GanttChart = ({ tasks, projectInfo, styLst }) => {
+const GanttChart = ({ defaultTasks, tasks, projectInfo, styLst }) => {
 
   //// useRef Section ////
   // Gantt Container DOM Element
   const ganttRef = useRef(null);
+  const ganttInstance = useRef(null);
   
   //// useState Section ////
   // Formatted Task List
@@ -18,27 +19,34 @@ const GanttChart = ({ tasks, projectInfo, styLst }) => {
 
   //// useEffect Section ////
   // useEffect - Task List Processing
+  // Parse and calculate task dates
   useEffect(() => {
-    const calculateTaskDates = () => {     
+    const calculateTaskDates = () => {
       if (!projectInfo.startDate) {
         console.error("Project start date is missing.");
         return [];
       }
+
       const projectStart = new Date(projectInfo.startDate);
+
       const taskMap = tasks.reduce((map, task) => {
         map[task.id] = task;
         return map;
       }, {});
+
       return tasks.map((task) => {
         const durationInDays = parseFloat(task.duration) || 1;
         const predecessor = task.predecessor ? taskMap[task.predecessor] : null;
+
         let startDate = new Date(projectStart);
         if (predecessor && predecessor.endDate) {
           startDate = new Date(predecessor.endDate);
-          startDate.setDate(startDate.getDate() + 1); // Start the day after the predecessor ends
+          startDate.setDate(startDate.getDate() + 1);
         }
+
         const endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + durationInDays - 1);
+
         return {
           id: task.id,
           name: task.name || "Unnamed Task",
@@ -49,13 +57,21 @@ const GanttChart = ({ tasks, projectInfo, styLst }) => {
         };
       });
     };
+
     const updatedTasks = calculateTaskDates();
     setParsedTasks(updatedTasks);
   }, [tasks, projectInfo]);
+  
   // useEffect  - Gantt Chart Creation
   useEffect(() => {
     if (parsedTasks.length > 0) {
-      new Gantt(ganttRef.current, parsedTasks, {
+      // Cleanup previous Gantt instance if exists
+      if (ganttInstance.current) {
+        ganttInstance.current = null;
+      }
+
+      // Create new Gantt instance
+      ganttInstance.current = new Gantt(ganttRef.current, parsedTasks, {
         view_mode: "Day",
         bar_height: 30,
         padding: 20,

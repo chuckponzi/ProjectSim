@@ -10,7 +10,7 @@ import CriticalPath from './CriticalPath';
 import DataAnalysis from './DataAnalysis';
 import TimelineView from './TimelineView';
 
-const Tabs = ({ inputTab, outputTab, tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, setMonteCarloParams, styLst }) => {
+const Tabs = ({ inputTab, outputTab, defaultTasks, tasks, setTasks, projectInfo, setProjectInfo, monteCarloParams, setMonteCarloParams, styLst }) => {
 
   return (
     <div className={styLst.div1}>
@@ -25,7 +25,7 @@ const Tabs = ({ inputTab, outputTab, tasks, setTasks, projectInfo, setProjectInf
       {/* Right Side - Outputs */}
       <div className={styLst.div2}>
         {outputTab === 'taskList' && <TaskList projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
-        {outputTab === 'ganttChart' && <GanttChart projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
+        {outputTab === 'ganttChart' && <GanttChart projectInfo={projectInfo} defaultTasks={defaultTasks} tasks={tasks} styLst={styLst} />}
         {outputTab === 'criticalPath' && <CriticalPath projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
         {outputTab === 'dataAnalysis' && <DataAnalysis projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}
         {outputTab === 'timelineView' && <TimelineView projectInfo={projectInfo} tasks={tasks} styLst={styLst} />}

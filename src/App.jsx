@@ -6,10 +6,29 @@ import './App.css';
 
 const App = () => {
 
+  const defaultTasks = [
+    {   
+      id: "001",
+      name: "First Task",
+      start: "2025-03-01",
+      end: "2025-03-08",
+      progress: 0,
+      dependencies: "",
+    },
+    {   
+      id: "002",
+      name: "Last Task",
+      start: "2025-03-09",
+      end: "2025-03-16",
+      progress: 0,
+      dependencies: "",
+    }
+];
+
   //// useState Section
   const [inputTab, setInputTab] = useState("taskInput");
   const [outputTab, setOutputTab] = useState("ganttChart");  
-  const [tasks, setTasks] = useState([]); // Default to empy task list  
+  const [tasks, setTasks] = useState(defaultTasks); // Default to empy task list  
   const [projectInfo, setProjectInfo] = useState({
     name: "My Project",
     startDate: new Date().toISOString().split("T")[0], // Default to today
@@ -31,7 +50,7 @@ const App = () => {
   }, [tasks]);
 
   //// Console Debug
-  console.log("Tasks: ", tasks, "Project Info: ", projectInfo, "MC: ", monteCarloParams);
+  //console.log("Tasks: ", tasks, "Project Info: ", projectInfo, "MC: ", monteCarloParams);
 
   //// Component Return
   return (
@@ -47,6 +66,7 @@ const App = () => {
       <Tabs
         inputTab={inputTab}
         outputTab={outputTab}
+        defaultTasks={defaultTasks}
         tasks={tasks}
         setTasks={setTasks}
         projectInfo={projectInfo}
